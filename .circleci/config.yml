@@ -1,0 +1,29 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: docker:17.07.0-ce
+
+    steps:
+      - checkout
+
+      - setup_remote_docker:
+          version: 17.07.0-ce
+
+      - run: docker build -t drupal .
+
+      - run: |
+          docker run --name drupal -d --rm drupal \
+            && curl http://localhost:8080/ | grep 'PHP Version' \
+            && docker stop drupal
+
+      - run: docker run drupal composer
+
+      - run: docker run drupal drush
+
+      - run: |
+          TAG=$([ "$CIRCLE_BRANCH" = "master" ] && echo latest || echo "$CIRCLE_BRANCH") \
+            && docker tag drupal "digdep/drupal-base:$TAG" \
+            && docker login -u "$DOCKER_HUB_USERNAME" -p "$DOCKER_HUB_PASSWORD" \
+            && docker push "digdep/drupal-base:$TAG"
