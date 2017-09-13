@@ -15,7 +15,7 @@ jobs:
 
       - run: |
           docker run --name drupal -d --rm drupal \
-            && curl http://localhost:8080/ | grep 'PHP Version' \
+            && wget -qO- http://localhost:8080/ | grep 'PHP Version' \
             && docker stop drupal
 
       - run: docker run drupal composer
