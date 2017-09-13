@@ -11,19 +11,30 @@ jobs:
       - setup_remote_docker:
           version: 17.07.0-ce
 
-      - run: docker build -t drupal .
+      - run: 
+          name: Build image
+          command: docker build -t drupal .
 
-      - run: |
-          docker run --name drupal -d --rm drupal \
-            && wget -qO- http://localhost:8080/ | grep 'PHP Version' \
-            && docker stop drupal
+      - run:
+          name: Test web stack
+          command: |
+            docker run -d --rm --name drupal drupal
+            sleep 2
+            docker exec drupal curl -s http://localhost:8080/ | grep 'PHP Version'
+            docker stop drupal
 
-      - run: docker run drupal composer
+      - run:
+          name: Test Composer
+          command: docker run drupal composer
 
-      - run: docker run drupal drush
+      - run:
+          name: Test Drush
+          command: docker run drupal drush
 
-      - run: |
-          TAG=$([ "$CIRCLE_BRANCH" = "master" ] && echo latest || echo "$CIRCLE_BRANCH") \
-            && docker tag drupal "digdep/drupal-base:$TAG" \
-            && docker login -u "$DOCKER_HUB_USERNAME" -p "$DOCKER_HUB_PASSWORD" \
-            && docker push "digdep/drupal-base:$TAG"
+      - run:
+          name: Push image to Docker Hub
+          command: |
+            TAG=$([ "$CIRCLE_BRANCH" = "master" ] && echo latest || echo "$CIRCLE_BRANCH")
+            docker tag drupal "digdep/drupal-base:$TAG"
+            docker login -u "$DOCKER_HUB_USERNAME" -p "$DOCKER_HUB_PASSWORD"
+            docker push "digdep/drupal-base:$TAG"
