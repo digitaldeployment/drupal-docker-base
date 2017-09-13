@@ -25,11 +25,11 @@ jobs:
 
       - run:
           name: Test Composer
-          command: docker run drupal composer
+          command: docker run --rm drupal composer -V
 
       - run:
           name: Test Drush
-          command: docker run drupal drush
+          command: docker run --rm drupal drush core-status
 
       - run:
           name: Push image to Docker Hub

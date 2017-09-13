@@ -137,5 +137,5 @@ RUN chown -R drupal:drupal /var/drupal
 EXPOSE 8080
 USER drupal
 WORKDIR /var/drupal
-ENV PATH="${HOME}/.composer/vendor/bin:${PATH}"
+ENV PATH="/home/drupal/.composer/vendor/bin:${PATH}"
 CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
