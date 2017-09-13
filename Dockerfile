@@ -127,15 +127,17 @@ COPY root/etc/nginx/nginx.conf /etc/nginx/
 COPY root/etc/php/conf.d/*.ini /etc/php/conf.d/
 COPY root/etc/php-fpm.conf /etc/
 
-RUN mkdir -p /etc/drush
-COPY root/etc/drush/drushrc.php /etc/drush/
-
 RUN mkdir -p /var/drupal/www
 COPY root/var/drupal/www/index.php /var/drupal/www/
 RUN chown -R drupal:drupal /var/drupal
 
-EXPOSE 8080
 USER drupal
-WORKDIR /var/drupal
+
 ENV PATH="/home/drupal/.composer/vendor/bin:${PATH}"
+
+RUN mkdir -p /home/drupal/.drush
+COPY root/home/drupal/.drush/drushrc.php /home/drupal/.drush/
+
+EXPOSE 8080
+WORKDIR /var/drupal
 CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
