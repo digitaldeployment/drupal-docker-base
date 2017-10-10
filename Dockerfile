@@ -91,6 +91,8 @@ RUN apk add --no-cache --virtual .build-deps \
   && make install \
   && cd .. \
   && rm -rf php-$PHP_VERSION \
+# Build PHP extensions.
+  && pecl install xdebug \
 # Clean up.
   && apk del .build-deps
 
