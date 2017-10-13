@@ -133,13 +133,13 @@ RUN mkdir -p /projects/drupal/www
 COPY root/projects/drupal/www/index.php /projects/drupal/www
 RUN chown -R drupal:drupal /projects
 
-USER drupal
-
-ENV PATH="/home/drupal/.composer/vendor/bin:${PATH}"
-
 RUN mkdir -p /home/drupal/.drush
 COPY root/home/drupal/.drush/drushrc.php /home/drupal/.drush/
+RUN chown -R drupal:drupal /home/drupal/.drush
+
+USER drupal
+ENV PATH="/home/drupal/.composer/vendor/bin:${PATH}"
+WORKDIR /projects
 
 EXPOSE 8080
-WORKDIR /projects
 CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
