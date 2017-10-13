@@ -129,9 +129,9 @@ COPY root/etc/nginx/nginx.conf /etc/nginx/
 COPY root/etc/php/conf.d/*.ini /etc/php/conf.d/
 COPY root/etc/php-fpm.conf /etc/
 
-RUN mkdir -p /var/drupal/www
-COPY root/var/drupal/www/index.php /var/drupal/www/
-RUN chown -R drupal:drupal /var/drupal
+RUN mkdir -p /projects/drupal/www
+COPY root/projects/drupal/www/index.php /projects/drupal/www
+RUN chown -R drupal:drupal /projects
 
 USER drupal
 
@@ -141,5 +141,5 @@ RUN mkdir -p /home/drupal/.drush
 COPY root/home/drupal/.drush/drushrc.php /home/drupal/.drush/
 
 EXPOSE 8080
-WORKDIR /var/drupal
+WORKDIR /projects
 CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]

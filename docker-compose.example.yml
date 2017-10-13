@@ -4,13 +4,15 @@ services:
   drupal:
     image: digdep/drupal-base
     volumes:
-      - /path/to/drupal:/var/drupal/www:rw,delegated
+      - /path/to/drupal:/projects/drupal/www:rw,delegated
     links:
       - db
     ports:
-      - "8000:8080"
+      - "80:8080"
 
   db:
     image: mysql:5.5
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    # ports:
+    #   - "3306:3306"
