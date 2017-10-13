@@ -34,7 +34,12 @@ jobs:
       - run:
           name: Push image to Docker Hub
           command: |
-            TAG=$([ "$CIRCLE_BRANCH" = "master" ] && echo latest || echo "$CIRCLE_BRANCH")
-            docker tag drupal "digdep/drupal-base:$TAG"
+            REPO="digdep/drupal-base"
+            TAG_PREFIX=$([ "$CIRCLE_BRANCH" = "master" ] && echo || echo "${CIRCLE_BRANCH}-")
+            TAG_MAJOR="$REPO:${TAG_PREFIX}2"
+            TAG_LATEST="$REPO:${TAG_PREFIX}latest"
+            docker tag drupal "$TAG_MAJOR"
+            docker tag drupal "$TAG_LATEST"
             docker login -u "$DOCKER_HUB_USERNAME" -p "$DOCKER_HUB_PASSWORD"
-            docker push "digdep/drupal-base:$TAG"
+            docker push "$TAG_MAJOR"
+            docker push "$TAG_LATEST"
