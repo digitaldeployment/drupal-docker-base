@@ -137,6 +137,9 @@ RUN mkdir -p /home/drupal/.drush
 COPY root/home/drupal/.drush/drushrc.php /home/drupal/.drush/
 RUN chown -R drupal:drupal /home/drupal/.drush
 
+COPY root/home/drupal/.my.cnf /home/drupal/
+RUN chown -R drupal:drupal /home/drupal/.my.cnf
+
 USER drupal
 ENV PATH="/home/drupal/.composer/vendor/bin:${PATH}"
 WORKDIR /projects
