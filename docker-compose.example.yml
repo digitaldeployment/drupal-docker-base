@@ -4,7 +4,7 @@ services:
   drupal:
     image: digdep/drupal-base
     volumes:
-      - /path/to/drupal:/projects/drupal/www:rw,delegated
+      - /path/to/drupal:/projects/drupal/web:rw,delegated
     links:
       - db
     ports:

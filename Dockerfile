@@ -129,8 +129,8 @@ COPY root/etc/nginx/nginx.conf /etc/nginx/
 COPY root/etc/php/conf.d/*.ini /etc/php/conf.d/
 COPY root/etc/php-fpm.conf /etc/
 
-RUN mkdir -p /projects/drupal/www
-COPY root/projects/drupal/www/index.php /projects/drupal/www
+RUN mkdir -p /projects/drupal/web
+COPY root/projects/drupal/web/index.php /projects/drupal/web
 RUN chown -R drupal:drupal /projects
 
 RUN mkdir -p /home/drupal/.drush
