@@ -142,6 +142,7 @@ RUN chown -R drupal:drupal /home/drupal/.my.cnf
 
 USER drupal
 ENV PATH="/home/drupal/.composer/vendor/bin:${PATH}"
+ENV SIMPLETEST_BASE_URL="http://localhost:8080/"
 WORKDIR /projects
 
 EXPOSE 8080
