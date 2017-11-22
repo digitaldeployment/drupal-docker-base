@@ -46,7 +46,7 @@ jobs:
             TAG_MAJOR="$REPO:${TAG_PREFIX}${VERSION_MAJOR}"
             TAG_MINOR="$REPO:${TAG_PREFIX}${VERSION_MAJOR}.${VERSION_MINOR}"
             docker login -u "$DOCKER_HUB_USERNAME" -p "$DOCKER_HUB_PASSWORD"
-            for TAG in "TAG_LATEST" "$TAG_MAJOR" "$TAG_MINOR"; do
+            for TAG in "$TAG_LATEST" "$TAG_MAJOR" "$TAG_MINOR"; do
               docker tag drupal "$TAG"
               docker push "$TAG"
             done
