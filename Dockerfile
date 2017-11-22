@@ -116,6 +116,7 @@ RUN curl -fL https://getcomposer.org/installer | php -- \
 RUN adduser -D drupal
 
 RUN su drupal -c 'composer global require drush/drush'
+RUN su drupal -c 'composer global require pantheon-systems/terminus'
 
 COPY root/etc/supervisord.conf /etc/
 

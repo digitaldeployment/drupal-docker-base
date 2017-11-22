@@ -32,6 +32,10 @@ jobs:
           command: docker run --rm drupal drush core-status
 
       - run:
+          name: Test Terminus
+          command: docker run --rm drupal terminus self:info
+
+      - run:
           name: Push image to Docker Hub
           command: |
             REPO="digdep/drupal-base"
