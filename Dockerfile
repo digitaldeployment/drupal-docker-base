@@ -100,6 +100,10 @@ RUN apk add --no-cache \
     vim \
     curl \
     supervisor \
+# JavaScript workflow dependencies.
+    nodejs \
+    nodejs-npm \
+    yarn \
 # Drush runtime dependencies.
     mysql-client \
 # CircleCI dependencies.
