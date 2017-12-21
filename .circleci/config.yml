@@ -39,7 +39,7 @@ jobs:
           name: Push image to Docker Hub
           command: |
             REPO="digdep/drupal-base"
-            VERSION_MAJOR="4"
+            VERSION_MAJOR="5"
             VERSION_MINOR="0"
             TAG_PREFIX=$([ "$CIRCLE_BRANCH" = "master" ] && echo || echo "${CIRCLE_BRANCH}-")
             TAG_LATEST="$REPO:${TAG_PREFIX}latest"

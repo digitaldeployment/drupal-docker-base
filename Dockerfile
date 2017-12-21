@@ -4,8 +4,6 @@ FROM node:8
 ENV NGINX_GPGKEY 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
 ENV SURY_PHP_GPGKEY DF3D585DB8F0EB658690A554AC0E47584A7A714D
 
-WORKDIR /root
-
 RUN apt-get update \
   && apt-get install -y lsb-release ca-certificates apt-transport-https \
   && apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys $NGINX_GPGKEY $SURY_PHP_GPGKEY \
@@ -62,9 +60,12 @@ RUN curl https://www.busybox.net/downloads/binaries/1.26.2-defconfig-multiarch/b
 RUN curl -fL https://getcomposer.org/installer | php -- \
     --install-dir=/usr/local/bin \
     --filename=composer
-RUN composer global require --no-plugins --no-scripts \
+
+RUN adduser --disabled-password --gecos '' drupal
+
+RUN su drupal -c 'composer global require \
     drush/drush \
-    pantheon-systems/terminus
+    pantheon-systems/terminus'
 
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 
@@ -80,12 +81,16 @@ RUN ln -s /etc/php/7.1/mods-available/drupal.ini /etc/php/7.1/cli/conf.d/80-drup
 RUN mkdir -p /projects/drupal/web
 COPY index.php /projects/drupal/web/index.php
 
-RUN mkdir -p /root/.drush
-COPY drushrc.php /root/.drush
+RUN mkdir -p /home/drupal/.drush
+COPY drushrc.php /home/drupal/.drush/
 
-COPY dotmy.cnf /root/.my.cnf
+COPY dotmy.cnf /home/drupal/.my.cnf
 
-ENV PATH "/root/.composer/vendor/bin:${PATH}"
+RUN chmod a+w /var/run /var/cache/nginx /var/log/nginx
+RUN chown -R drupal:drupal /projects /home/drupal
+
+USER drupal
+ENV PATH "/home/drupal/.composer/vendor/bin:${PATH}"
 ENV SIMPLETEST_BASE_URL http://localhost:8080
 ENV CYPRESS_BASE_URL http://localhost:8080
 WORKDIR /projects
