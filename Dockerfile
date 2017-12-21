@@ -53,6 +53,12 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get purge -y --auto-remove
 
+# TODO: Figure out why Debian's BusyBox does not include sendmail.
+# TODO: Verify integrity of this download.
+RUN curl https://www.busybox.net/downloads/binaries/1.26.2-defconfig-multiarch/busybox-x86_64 > /usr/local/bin/busybox \
+  && chmod a+x /usr/local/bin/busybox \
+  && ln -s /usr/local/bin/busybox /usr/local/bin/sendmail
+
 RUN curl -fL https://getcomposer.org/installer | php -- \
     --install-dir=/usr/local/bin \
     --filename=composer
