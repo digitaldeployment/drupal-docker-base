@@ -77,7 +77,8 @@ COPY drushrc.php /root/.drush
 COPY dotmy.cnf /root/.my.cnf
 
 ENV PATH "/root/.composer/vendor/bin:${PATH}"
-ENV SIMPLETEST_BASE_URL http://localhost:8080/
+ENV SIMPLETEST_BASE_URL http://localhost:8080
+ENV CYPRESS_BASE_URL http://localhost:8080
 WORKDIR /projects
 
 EXPOSE 8080
