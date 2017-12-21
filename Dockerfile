@@ -73,6 +73,9 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 COPY nginx.conf /etc/nginx/nginx.conf
 
 COPY php-fpm.conf /etc/php/7.1/fpm/php-fpm.conf
+COPY php.drupal.ini /etc/php/7.1/mods-available/drupal.ini
+RUN ln -s /etc/php/7.1/mods-available/drupal.ini /etc/php/7.1/cli/conf.d/80-drupal.ini \
+  && ln -s /etc/php/7.1/mods-available/drupal.ini /etc/php/7.1/fpm/conf.d/80-drupal.ini
 
 RUN mkdir -p /projects/drupal/web
 COPY index.php /projects/drupal/web/index.php
